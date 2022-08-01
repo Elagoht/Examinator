@@ -1,0 +1,152 @@
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  transition:all .3s;
+  font-family:sans-serif;
+} 
+body {
+  margin:1rem auto;
+  width:100%;
+  max-width:1000px;
+}
+#question-selector {
+  display:flex;
+  flex-flow:wrap;
+  justify-content:center;
+}
+nav input {
+  min-width:2rem;
+  height:2rem;
+  padding:.5rem;
+  margin:.2rem;
+  border-radius:.2rem;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:1px solid #444;
+  background-color:#eee;
+}
+.curr {
+  outline:2px solid black;
+}
+legend {
+  padding:.25rem;
+  margin-left:.5rem;
+  font-weight:bold;
+}
+fieldset {
+  padding:1rem;
+  margin:1rem 0;
+  background-color:#eee;
+  border-radius:.3rem;
+  display:flex;
+  flex-direction:column;
+}
+p {
+  line-height: 1.5;
+  text-align:inherit;
+}
+fieldset > p:last-of-type {
+  font-weight:bold;
+  text-align:justify;
+}
+label {
+  width:100%;
+  display:flex;
+  padding:.25rem;
+  align-items:center;
+  cursor:pointer;
+} 
+input[type="radio"] {
+  border-radius:100%;
+  display:inline-block;
+  margin-right:1rem;
+  position:relative;
+  min-width:2rem;
+  max-width:2rem;
+  height:2rem;
+  cursor:pointer;
+  -webkit-appearance:none;
+}
+input[type=radio]:after {
+  border-radius:100%;
+  top:-100%;
+  left:0;
+  content:'';
+  width:100%;
+  height:100%;
+  display: block;
+  position:relative;
+  outline:.2rem solid #444;
+  opacity:0;
+  transition:all .3s;
+}
+input[type=radio]:checked:after {
+  opacity:1;
+}
+input[type=radio]:before {
+  content:' ';
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:1rem;
+  width:100%;
+  height:100%;
+}
+input[value=A]:before {content:"A)"}
+input[value=B]:before {content:"B)"}
+input[value=C]:before {content:"C)"}
+input[value=D]:before {content:"D)"}
+input[value=E]:before {content:"E)"}
+input[value=" "]:before {content:"X"}
+input[type=submit]:hover {
+  background-image:linear-gradient(to top, #bba, #ddd)
+}
+.ticked {
+  background-color:aqua;
+}
+.true {
+  background-color:green;
+}
+.false {
+  background-color:red;
+}
+.empty {
+  background-color:gray;
+}
+#true-count {color:green;}
+#false-count {color:red;}
+#empty-count {color:gray;}
+#confirm {
+  padding:.25rem;
+  background-color:#eee;
+  border-radius:.3rem;
+  border:1px solid darkgray;
+  display:none;
+  flex-direction:column;
+  width: 280px;
+  text-align:center;
+  position: fixed;
+  left: calc(50% - 140px);
+  top: calc(50vh - 107px);
+}
+#quit-buttons {
+  display:flex;
+  justify-content:flex-end;
+}
+#confirm button {
+  margin:.25rem;
+  color:white;
+  border-radius:.3rem;
+  border:1px solid darkgray;
+  padding:.25rem;
+}
+#quit {
+  background-color:red;
+}
+#dont-quit {
+  background-color:green;
+}
+
