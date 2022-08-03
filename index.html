@@ -11,6 +11,159 @@
 <script>
     const answerKey="ABCDEABCDE"
 </script>
+<style>
+    * {
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      transition:all .3s;
+      font-family:sans-serif;
+    } 
+    body {
+      margin:1rem auto;
+      width:100%;
+      max-width:1000px;
+    }
+    #question-selector {
+      display:flex;
+      flex-flow:wrap;
+      justify-content:center;
+    }
+    nav input {
+      min-width:2rem;
+      height:2rem;
+      padding:.5rem;
+      margin:.2rem;
+      border-radius:.2rem;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      border:1px solid #444;
+      background-color:#eee;
+    }
+    .curr {
+      outline:2px solid black;
+    }
+    legend {
+      padding:.25rem;
+      margin-left:.5rem;
+      font-weight:bold;
+    }
+    fieldset {
+      padding:1rem;
+      margin:1rem 0;
+      background-color:#eee;
+      border-radius:.3rem;
+      display:flex;
+      flex-direction:column;
+    }
+    p {
+      line-height: 1.5;
+      text-align:inherit;
+    }
+    fieldset > p:last-of-type {
+      font-weight:bold;
+      text-align:justify;
+    }
+    label {
+      width:100%;
+      display:flex;
+      padding:.25rem;
+      align-items:center;
+      cursor:pointer;
+    } 
+    input[type="radio"] {
+      border-radius:100%;
+      display:inline-block;
+      margin-right:1rem;
+      position:relative;
+      min-width:2rem;
+      max-width:2rem;
+      height:2rem;
+      cursor:pointer;
+      -webkit-appearance:none;
+    }
+    input[type=radio]:after {
+      border-radius:100%;
+      top:-100%;
+      left:0;
+      content:'';
+      width:100%;
+      height:100%;
+      display: block;
+      position:relative;
+      outline:.2rem solid #444;
+      opacity:0;
+      transition:all .3s;
+    }
+    input[type=radio]:checked:after {
+      opacity:1;
+    }
+    input[type=radio]:before {
+      content:' ';
+      position:relative;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:1rem;
+      width:100%;
+      height:100%;
+    }
+    input[value=A]:before {content:"A)"}
+    input[value=B]:before {content:"B)"}
+    input[value=C]:before {content:"C)"}
+    input[value=D]:before {content:"D)"}
+    input[value=E]:before {content:"E)"}
+    input[value=" "]:before {content:"X"}
+    input[type=submit]:hover {
+      background-image:linear-gradient(to top, #bba, #ddd)
+    }
+    .ticked {
+      background-color:aqua;
+    }
+    .true {
+      background-color:green;
+    }
+    .false {
+      background-color:red;
+    }
+    .empty {
+      background-color:gray;
+    }
+    #true-count {color:green;}
+    #false-count {color:red;}
+    #empty-count {color:gray;}
+    #confirm {
+      padding:.25rem;
+      background-color:#eee;
+      border-radius:.3rem;
+      border:1px solid darkgray;
+      display:none;
+      flex-direction:column;
+      width: 280px;
+      text-align:center;
+      position: fixed;
+      left: calc(50% - 140px);
+      top: calc(50vh - 107px);
+    }
+    #quit-buttons {
+      display:flex;
+      justify-content:flex-end;
+    }
+    #confirm button {
+      margin:.25rem;
+      color:white;
+      border-radius:.3rem;
+      border:1px solid darkgray;
+      padding:.25rem;
+    }
+    #quit {
+      background-color:red;
+    }
+    #dont-quit {
+      background-color:green;
+    }
+</style>
 <body>
     <header>
         <h1>Lorem Ipsum Exam Sit Amet</h1>
@@ -33,43 +186,44 @@
     <section>
 <fieldset>
     <legend>Question 1</legend>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Massa tincidunt dui ut ornare lectus sit. Sodales ut etiam sit amet nisl purus in mollis nunc?</p>
-    <label><input type="radio" name="1" value="A"/> Dolor morbi non arcu risus quis varius quam.</label>
-    <label><input type="radio" name="1" value="B"/> Lacus sed turpis tincidunt id aliquet risus</label>
-    <label><input type="radio" name="1" value="C"/> Feugiat in. Vestibulum sed arcu non odio.</label>
-    <label><input type="radio" name="1" value="D"/> Eget aliquet nibh praesent tristique magna.</label>
-    <label><input type="radio" name="1" value="E"/> Sit. Dolor sit amet consectetur adipiscing.</label>
-    <label><input  type="radio" name="1" value=" " checked/> Empty.</label>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Massa tincidunt dui ut ornare lectus sit.</p>
+    <p>Sodales ut etiam sit amet nisl purus in mollis nunc?</p>
+    <label><input autocomplete="off" type="radio" name="1" value="A"/> Selam Dolor morbi non arcu risus quis varius quam.</label>
+    <label><input autocomplete="off" type="radio" name="1" value="B"/> Lacus sed turpis tincidunt id aliquet risus</label>
+    <label><input autocomplete="off" type="radio" name="1" value="C"/> Feugiat in. Vestibulum sed arcu non odio. awdawd</label>
+    <label><input autocomplete="off" type="radio" name="1" value="D"/> Eget aliquet nibh praesent tristique magna.</label>
+    <label><input autocomplete="off" type="radio" name="1" value="E"/> Sit. Dolor sit amet consectetur adipiscing.</label>
+    <label><input  type="radio" name="1" value=" " checked/> Leave Blank.</label>
 </fieldset>
 <fieldset>
     <legend>Question 2</legend>
     <p>Elit duis tristique. Leo vel orci porta non pulvinar. Lectus quam id leo in.</p>
-    <label><input type="radio" name="2" value="A"/> Pretium aenean pharetra magna.</label>
-    <label><input type="radio" name="2" value="B"/> Ac placerat vestibulum lectus.</label>
-    <label><input type="radio" name="2" value="C"/> Mauris ultrices. Molestie a.</label>
-    <label><input type="radio" name="2" value="D"/> Iaculis at erat. Tortor posuere.</label>
-    <label><input type="radio" name="2" value="E"/> Ac ut consequat semper viverra.</label>
-    <label><input  type="radio" name="2" value=" " checked/> Empty.</label>
+    <label><input autocomplete="off" type="radio" name="2" value="A"/> Pretium aenean pharetra magna.</label>
+    <label><input autocomplete="off" type="radio" name="2" value="B"/> Ac placerat vestibulum lectus.</label>
+    <label><input autocomplete="off" type="radio" name="2" value="C"/> Mauris ultrices. Molestie a.</label>
+    <label><input autocomplete="off" type="radio" name="2" value="D"/> Iaculis at erat. Tortor posuere.</label>
+    <label><input autocomplete="off" type="radio" name="2" value="E"/> Ac ut consequat semper viverra.</label>
+    <label><input  type="radio" name="2" value=" " checked/> Leave Blank.</label>
 </fieldset>
 <fieldset>
     <legend>Question 3</legend>
     <p>Nam libero. Egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Purus in mollis nunc sed id semper.</p>
-    <label><input type="radio" name="3" value="A"/> Ac turpis egestas maecenas pharetra.</label>
-    <label><input type="radio" name="3" value="B"/> Nunc aliquet bibendum enim facilisis.</label>
-    <label><input type="radio" name="3" value="C"/> Gravida neque. Enim eu turpis egestas.</label>
-    <label><input type="radio" name="3" value="D"/> Pretium aenean pharetra magna ac.</label>
-    <label><input type="radio" name="3" value="E"/> Libero volutpat sed cras ornare arcu.</label>
-    <label><input  type="radio" name="3" value=" " checked/> Empty.</label>
+    <label><input autocomplete="off" type="radio" name="3" value="A"/> Ac turpis egestas maecenas pharetra.</label>
+    <label><input autocomplete="off" type="radio" name="3" value="B"/> Nunc aliquet bibendum enim facilisis.</label>
+    <label><input autocomplete="off" type="radio" name="3" value="C"/> Gravida neque. Enim eu turpis egestas.</label>
+    <label><input autocomplete="off" type="radio" name="3" value="D"/> Pretium aenean pharetra magna ac.</label>
+    <label><input autocomplete="off" type="radio" name="3" value="E"/> Libero volutpat sed cras ornare arcu.</label>
+    <label><input  type="radio" name="3" value=" " checked/> Leave Blank.</label>
 </fieldset>
 <fieldset>
     <legend>Question 4</legend>
     <p>Turpis in eu mi bibendum neque egestas congue quisque. Iaculis at erat pellentesque adipiscing commodo elit. Ornare massa eget egestas purus viverra accumsan in.</p>
-    <label><input type="radio" name="4" value="A"/> Lacus vestibulum sed arcu non.</label>
-    <label><input type="radio" name="4" value="B"/> Odio euismod lacinia at quis.</label>
-    <label><input type="radio" name="4" value="C"/> Sit amet tellus cras adipiscing.</label>
-    <label><input type="radio" name="4" value="D"/> Enim eu. Id diam maecenas.</label>
-    <label><input type="radio" name="4" value="E"/> Ultricies mi eget mauris. Vitae.</label>
-    <label><input  type="radio" name="4" value=" " checked/> Empty.</label>
+    <label><input autocomplete="off" type="radio" name="4" value="A"/> Lacus vestibulum sed arcu non.</label>
+    <label><input autocomplete="off" type="radio" name="4" value="B"/> Odio euismod lacinia at quis.</label>
+    <label><input autocomplete="off" type="radio" name="4" value="C"/> Sit amet tellus cras adipiscing.</label>
+    <label><input autocomplete="off" type="radio" name="4" value="D"/> Enim eu. Id diam maecenas.</label>
+    <label><input autocomplete="off" type="radio" name="4" value="E"/> Ultricies mi eget mauris. Vitae.</label>
+    <label><input  type="radio" name="4" value=" " checked/> Leave Blank.</label>
 </fieldset>
 <fieldset>
     <legend>Question 5</legend>
@@ -78,62 +232,62 @@
     <p>III. Rhoncus urna</p>
     <p>IV. Vel facilisis</p>
     <p>Volutpat est velit egestas dui. Viverra orci sagittis eu volutpat odio facilisis mauris sit amet. Tortor condimentum lacinia quis vel eros donec.</p>
-    <label><input type="radio" name="5" value="A"/> I & II</label>
-    <label><input type="radio" name="5" value="B"/> I & III</label>
-    <label><input type="radio" name="5" value="C"/> II & III</label>
-    <label><input type="radio" name="5" value="D"/> II & IV</label>
-    <label><input type="radio" name="5" value="E"/> III & IV</label>
-    <label><input  type="radio" name="5" value=" " checked/> Empty.</label>
+    <label><input autocomplete="off" type="radio" name="5" value="A"/> I & II</label>
+    <label><input autocomplete="off" type="radio" name="5" value="B"/> I & III</label>
+    <label><input autocomplete="off" type="radio" name="5" value="C"/> II & III</label>
+    <label><input autocomplete="off" type="radio" name="5" value="D"/> II & IV</label>
+    <label><input autocomplete="off" type="radio" name="5" value="E"/> III & IV</label>
+    <label><input  type="radio" name="5" value=" " checked/> Leave Blank.</label>
 </fieldset>
 <fieldset>
     <legend>Question 6</legend>
     <p>Sed elementum tempus egestas sed sed. Adipiscing commodo elit at imperdiet.</p>
-    <label><input type="radio" name="6" value="A"/> Velit sed ullamcorper morbi tincidunt.</label>
-    <label><input type="radio" name="6" value="B"/> Est velit egestas dui id ornare arcu.</label>
-    <label><input type="radio" name="6" value="C"/> Odio. Fermentum odio eu feugiat pretium.</label>
-    <label><input type="radio" name="6" value="D"/> Nibh. Eget nunc scelerisque viverra.</label>
-    <label><input type="radio" name="6" value="E"/> Mauris in. Et malesuada fames ac turpis.</label>
-    <label><input  type="radio" name="6" value=" " checked/> Empty.</label>
+    <label><input autocomplete="off" type="radio" name="6" value="A"/> Velit sed ullamcorper morbi tincidunt.</label>
+    <label><input autocomplete="off" type="radio" name="6" value="B"/> Est velit egestas dui id ornare arcu.</label>
+    <label><input autocomplete="off" type="radio" name="6" value="C"/> Odio. Fermentum odio eu feugiat pretium.</label>
+    <label><input autocomplete="off" type="radio" name="6" value="D"/> Nibh. Eget nunc scelerisque viverra.</label>
+    <label><input autocomplete="off" type="radio" name="6" value="E"/> Mauris in. Et malesuada fames ac turpis.</label>
+    <label><input  type="radio" name="6" value=" " checked/> Leave Blank.</label>
 </fieldset>
 <fieldset>
     <legend>Question 7</legend>
     <p>Egestas sed. Elementum eu facilisis sed odio morbi quis commodo odio. Pellentesque habitant morbi tristique senectus et netus et. In aliquam sem fringilla ut morbi tincidunt augue. Nullam eget felis eget nunc lobortis mattis aliquam. Nam aliquam sem et tortor. Eget magna fermentum iaculis eu non diam. Mauris commodo quis imperdiet massa tincidunt. Aliquam sem et tortor consequat. Magna sit amet purus gravida quis blandit. Ipsum suspendisse ultrices gravida dictum fusce ut. Magna eget est lorem ipsum dolor.</p>
-    <label><input type="radio" name="7" value="A"/> Fermentum odio eu feugiat pretium. Felis imperdiet proin fermentum leo vel orci.</label>
-    <label><input type="radio" name="7" value="B"/> Tincidunt ornare massa eget egestas purus viverra accumsan. Enim ut tellus elementu.</label>
-    <label><input type="radio" name="7" value="C"/> Sagittis. Risus quis varius quam quisque id diam vel. Nisl condimentum id venenatis.</label>
-    <label><input type="radio" name="7" value="D"/> A condimentum. Facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum.</label>
-    <label><input type="radio" name="7" value="E"/> Dui. Malesuada fames ac turpis egestas sed tempus urna. Sed libero enim sed faucibus.</label>
-    <label><input  type="radio" name="7" value=" " checked/> Empty.</label>
+    <label><input autocomplete="off" type="radio" name="7" value="A"/> Fermentum odio eu feugiat pretium. Felis imperdiet proin fermentum leo vel orci.</label>
+    <label><input autocomplete="off" type="radio" name="7" value="B"/> Tincidunt ornare massa eget egestas purus viverra accumsan. Enim ut tellus elementu.</label>
+    <label><input autocomplete="off" type="radio" name="7" value="C"/> Sagittis. Risus quis varius quam quisque id diam vel. Nisl condimentum id venenatis.</label>
+    <label><input autocomplete="off" type="radio" name="7" value="D"/> A condimentum. Facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum.</label>
+    <label><input autocomplete="off" type="radio" name="7" value="E"/> Dui. Malesuada fames ac turpis egestas sed tempus urna. Sed libero enim sed faucibus.</label>
+    <label><input  type="radio" name="7" value=" " checked/> Leave Blank.</label>
 </fieldset>
 <fieldset>
     <legend>Question 8</legend>
     <p>Turpis in eu. Vitae semper quis lectus nulla at volutpat diam ut. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel.</p>
-    <label><input type="radio" name="8" value="A"/> Mauris cursus mattis molestie a iaculis at.</label>
-    <label><input type="radio" name="8" value="B"/> Eget dolor morbi non arcu risus quis. Massa.</label>
-    <label><input type="radio" name="8" value="C"/> Id neque aliquam vestibulum morbi. Laoreet.</label>
-    <label><input type="radio" name="8" value="D"/> Id donec ultrices tincidunt arcu. Quis.</label>
-    <label><input type="radio" name="8" value="E"/> Quis imperdiet massa tincidunt nunc.</label>
-    <label><input  type="radio" name="8" value=" " checked/> Empty.</label>
+    <label><input autocomplete="off" type="radio" name="8" value="A"/> Mauris cursus mattis molestie a iaculis at.</label>
+    <label><input autocomplete="off" type="radio" name="8" value="B"/> Eget dolor morbi non arcu risus quis. Massa.</label>
+    <label><input autocomplete="off" type="radio" name="8" value="C"/> Id neque aliquam vestibulum morbi. Laoreet.</label>
+    <label><input autocomplete="off" type="radio" name="8" value="D"/> Id donec ultrices tincidunt arcu. Quis.</label>
+    <label><input autocomplete="off" type="radio" name="8" value="E"/> Quis imperdiet massa tincidunt nunc.</label>
+    <label><input  type="radio" name="8" value=" " checked/> Leave Blank.</label>
 </fieldset>
 <fieldset>
     <legend>Question 9</legend>
     <p>Et malesuada fames ac turpis egestas. Sed tempus urna. Mauris augue neque.</p>
-    <label><input type="radio" name="9" value="A"/> Gravida in fermentum et sollicitudin.</label>
-    <label><input type="radio" name="9" value="B"/> Ut pharetra sit amet aliquam id diam.</label>
-    <label><input type="radio" name="9" value="C"/> Mauris cursus mattis molestie a. Ipsum.</label>
-    <label><input type="radio" name="9" value="D"/> Dolor sit amet consectetur adipiscing.</label>
-    <label><input type="radio" name="9" value="E"/> Elit pellentesque. Faucibus pulvinar.</label>
-    <label><input  type="radio" name="9" value=" " checked/> Empty.</label>
+    <label><input autocomplete="off" type="radio" name="9" value="A"/> Gravida in fermentum et sollicitudin.</label>
+    <label><input autocomplete="off" type="radio" name="9" value="B"/> Ut pharetra sit amet aliquam id diam.</label>
+    <label><input autocomplete="off" type="radio" name="9" value="C"/> Mauris cursus mattis molestie a. Ipsum.</label>
+    <label><input autocomplete="off" type="radio" name="9" value="D"/> Dolor sit amet consectetur adipiscing.</label>
+    <label><input autocomplete="off" type="radio" name="9" value="E"/> Elit pellentesque. Faucibus pulvinar.</label>
+    <label><input  type="radio" name="9" value=" " checked/> Leave Blank.</label>
 </fieldset>
 <fieldset>
     <legend>Question 10</legend>
     <p>Elementum integer enim neque volutpat ac. Vitae tortor condimentum lacinia quis. Enim nulla aliquet porttitor lacus.</p>
-    <label><input type="radio" name="10" value="A"/> Volutpat commodo sed egestas egestas.</label>
-    <label><input type="radio" name="10" value="B"/> Fringilla phasellus faucibus. Nulla.</label>
-    <label><input type="radio" name="10" value="C"/> Posuere sollicitudin aliquam ultrices.</label>
-    <label><input type="radio" name="10" value="D"/> Sit amet nisl suscipit adipiscing.</label>
-    <label><input type="radio" name="10" value="E"/> Bibendum est. Dignissim suspendisse.</label>
-    <label><input type="radio" name="10" value=" "/ checked> Empty.</label>
+    <label><input autocomplete="off" type="radio" name="10" value="A"/> Volutpat commodo sed egestas egestas.</label>
+    <label><input autocomplete="off" type="radio" name="10" value="B"/> Fringilla phasellus faucibus. Nulla.</label>
+    <label><input autocomplete="off" type="radio" name="10" value="C"/> Posuere sollicitudin aliquam ultrices.</label>
+    <label><input autocomplete="off" type="radio" name="10" value="D"/> Sit amet nisl suscipit adipiscing.</label>
+    <label><input autocomplete="off" type="radio" name="10" value="E"/> Bibendum est. Dignissim suspendisse.</label>
+    <label><input type="radio" name="10" value=" "/ checked> Leave Blank.</label>
 </fieldset>
     </section>
     <footer>
@@ -146,5 +300,135 @@
         <div>
     </div>
 </body> 
-<script src="/behaviour.js"></script>
+<script>
+    const questions=Array.from(document.getElementsByTagName("fieldset"))
+    const selectors=Array.from(document.getElementsByClassName("qstn-sel"))
+    const confirmation=document.getElementById("confirm")
+    const lenq=questions.length
+    let answers=[]
+    let curr=0
+    let finished=false
+    let asked=false
+    const startTime=performance.now()
+    questions.forEach(element=>{answers.push(" ")})
+    const hideAll=()=>{
+      questions.forEach(element=>{element.style.display="none"})
+      selectors.forEach(element=>{element.classList.remove("curr")
+      })
+    }
+    const showQ=(nth)=>{
+      hideAll()
+      questions[nth].style.display="flex"
+      selectors[nth].classList.add("curr")
+      curr=nth
+    }
+    const nextQ=()=>{
+      if (curr<lenq-1) {curr++}
+      else {curr=0}
+      showQ(curr)
+    }
+    const prevQ=()=>{
+      if (curr>0) {curr--}
+      else {curr=lenq-1}
+      showQ(curr)
+    }
+    const updateNavBar=(nth,val)=>{
+      answers[nth]=val
+      if (val!==" ") {
+        selectors[nth].classList.add("ticked")
+      } else {
+        selectors[nth].classList.remove("ticked")
+      }
+    }
+    const radios=Array.from(document.querySelectorAll("input[type=radio]"))
+    radios.forEach(element=>{
+      element.addEventListener("change",()=>{
+        updateNavBar(element.name-1,element.value)
+      })
+    })
+    const humanizeTime=(ms)=>{
+      var floor=Math.floor,secs=floor(ms/1000),mins=floor(secs/60),hrs=floor(mins/60),result=""
+      if (hrs>0) {result+=hrs%24 +" hour(s), "}
+      if (mins>0) {result+=mins%60+" minute(s), "}
+      if (secs>0) {result+=secs%60+" second(s)"}
+      if (result==="") {return "0 second"}
+      else {return result}
+    }
+    function calcMark() {
+      let mt=lenq
+      let fl=0
+      let tr=0
+      for (let i=0;i<answerKey.length;i++) {
+        let ans=answerKey.charAt(i)===answers[i]
+        if (ans===true) {
+          tr++
+          mt--
+          selectors[i].classList.add("true")
+        }
+        else if (ans===false && answers[i]!==" ") {
+          fl++
+          mt--
+          selectors[i].classList.add("false")
+        }
+        else {
+          selectors[i].classList.add("empty")
+        }
+      }
+      const ppq=100/lenq
+      const wtar=ppq/(Array.from(questions[0].getElementsByTagName("input")).length-2)
+      const net=tr*ppq-wtar*fl
+      const nwc=ppq*tr
+      document.querySelector("footer").innerHTML=`
+            <fieldset>
+                <legend>Result</legend>
+                <p>True: <span id="true-count">${tr}</span></p>
+                <p>False <span id="false-count">${fl}</span></p>
+                <p>Empty: <span id="empty-count">${mt}</span></p>
+                <p>Time: ${humanizeTime(performance.now()-startTime)}</p>
+                <p>Score Without Correction: ${nwc.toFixed(2)}<br/>
+                Score With Correction: ${net.toFixed(2)}</p>
+            </fieldset>
+            `
+    }
+    function doFinishExam(answ) {
+      if (answ===true) {
+        radios.forEach(element=>{element.disabled=true})
+        for (let i=0;i<answerKey.length;i++) {
+          questions[i].querySelector(`input[value=${answerKey.charAt(i)}]`).parentElement.style.color="green"
+          questions[i].querySelector(`input[value=${answerKey.charAt(i)}]`).parentElement.style.fontWeight="bold"
+          questions[i].querySelector(`input[value=${answerKey.charAt(i)}]`).style.fontWeight="bold"
+        }
+        calcMark()
+        confirmation.parentElement.removeChild(confirmation)
+        finished=true
+      }
+      else {
+        confirmation.style.display="none"
+      }
+      asked=false
+    }
+    function promptToFinish() {
+      confirmation.style.display="flex"
+      asked=true
+    }
+    window.onkeydown=key=> {
+      if (finished===false) {
+        if (key.keyCode===65) {questions[curr].querySelector("input[value=A]").checked=true;updateNavBar(curr,"A")}
+        if (key.keyCode===66) {questions[curr].querySelector("input[value=B]").checked=true;updateNavBar(curr,"B")}
+        if (key.keyCode===67) {questions[curr].querySelector("input[value=C]").checked=true;updateNavBar(curr,"C")}
+        if (key.keyCode===68) {questions[curr].querySelector("input[value=D]").checked=true;updateNavBar(curr,"D")}
+        if (key.keyCode===69) {questions[curr].querySelector("input[value=E]").checked=true;updateNavBar(curr,"E")}
+        if (key.keyCode===8)  {questions[curr].querySelector("input[value=' ']").checked=true;updateNavBar(curr," ")}
+        if (key.keyCode===35) {promptToFinish()}
+        if (key.keyCode===27) {doFinishExam(false)}
+        if (key.keyCode===13 && asked===true) {doFinishExam(true)}
+      }
+      if ([39].includes(key.keyCode)) {nextQ()}
+      if ([37].includes(key.keyCode)) {prevQ()}
+    }
+    showQ(0)
+    for (let i=0;i<answerKey.length;i++) {
+      questions[i].querySelector("input[value=' ']").checked=true;
+    }
+</script>
 </html>

@@ -91,7 +91,9 @@ function doFinishExam(answ) {
   if (answ===true) {
     radios.forEach(element=>{element.disabled=true})
     for (let i=0;i<answerKey.length;i++) {
-      questions[i].querySelector(`input[value=${answerKey.charAt(i)}]`).style.backgroundColor="gold"
+      questions[i].querySelector(`input[value=${answerKey.charAt(i)}]`).parentElement.style.color="green"
+      questions[i].querySelector(`input[value=${answerKey.charAt(i)}]`).parentElement.style.fontWeight="bold"
+      questions[i].querySelector(`input[value=${answerKey.charAt(i)}]`).style.fontWeight="bold"
     }
     calcMark()
     confirmation.parentElement.removeChild(confirmation)
@@ -122,3 +124,6 @@ window.onkeydown=key=> {
   if ([37].includes(key.keyCode)) {prevQ()}
 }
 showQ(0)
+for (let i=0;i<answerKey.length;i++) {
+  questions[i].querySelector("input[value=' ']").checked=true;
+}
