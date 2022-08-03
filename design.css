@@ -149,4 +149,21 @@ input[type=submit]:hover {
 #dont-quit {
   background-color:green;
 }
-
+aside {
+  padding:1rem;
+  text-align:center;
+  margin:0 auto;
+  background-color:#eee;
+  border:1px solid darkgray;
+  border-radius:.3rem;
+}
+#count-down {
+    text-align:center;
+    position: relative;
+    top:90px;
+}
+.circle_animation {
+  stroke-dasharray: 440;
+  stroke-dashoffset: 440;
+  transition: all .5s ease;
+}

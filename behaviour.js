@@ -1,3 +1,5 @@
+const timer=document.getElementById("count-down")
+const circle=document.getElementById("circle")
 const questions=Array.from(document.getElementsByTagName("fieldset"))
 const selectors=Array.from(document.getElementsByClassName("qstn-sel"))
 const confirmation=document.getElementById("confirm")
@@ -98,6 +100,10 @@ function doFinishExam(answ) {
     calcMark()
     confirmation.parentElement.removeChild(confirmation)
     finished=true
+    if (timeExpired===false) {
+      const aside=document.getElementsByTagName("aside")[0]
+      aside.parentElement.removeChild(aside)
+    }
   }
   else {
     confirmation.style.display="none"
@@ -125,5 +131,29 @@ window.onkeydown=key=> {
 }
 showQ(0)
 for (let i=0;i<answerKey.length;i++) {
-  questions[i].querySelector("input[value=' ']").checked=true;
+  questions[i].querySelector("input[value=' ']").checked=true
 }
+let timeExpired=false
+let finishTime=new Date()
+finishTime.setMinutes(finishTime.getMinutes()+time)
+let circumference=1
+let countDown=setInterval(function() {
+  let now=new Date().getTime()
+  let diff=finishTime-now
+  let hours=Math.floor((diff%(86400000))/(3600000))
+  let minutes=Math.floor((diff%(3600000))/(60000))
+  let seconds=Math.floor((diff%(60000))/1000)
+  let display=""
+  if (hours>0) {display+=hours+"h "}
+  if (minutes>0 || hours>0) {display+=minutes+"m "}
+  display+=seconds+"s"
+  timer.innerHTML=display
+  circle.style.strokeDashoffset=440-((circumference)*(440/time/60))
+  circumference++
+  if (diff<0) {
+    clearInterval(countDown)
+    timer.innerHTML="Time expired."
+    timeExpired=true
+    doFinishExam(true)
+  }
+},1000)

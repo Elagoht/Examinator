@@ -224,6 +224,9 @@ class MainWin(QMainWindow):
                 self.eAnswerKey.setText(lines[-1].strip().upper())
                 self.exam.setPlainText("".join(lines[1:-2]))
                 self.content=self.exam.toPlainText()
+                self.time=self.sTime.value()
+                self.title=self.eTitle.text()
+                self.answerKey=self.eAnswerKey.text()
                 self.setSaveStar()
                 self.status.showMessage("Document loaded successfully.")
 
