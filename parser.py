@@ -20,7 +20,7 @@ def parse(inp,out):
         else:
             result+="    <p>"+line.strip()+"</p>\n"
     html=f"""<!DOCTYPE html>
-<!-- This document automatically generated with Examination by Elagoht -->
+<!-- This document automatically generated with Examinator by Elagoht -->
 <html lang="tr">
 <head>
     <meta charset="UTF-8">

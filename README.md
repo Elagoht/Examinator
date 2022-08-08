@@ -1,5 +1,7 @@
 # Examinator
 
+![An Exam Created With Examinator](https://raw.githubusercontent.com/Elagoht/Examinator/main/screenshot.png)
+
 Examinator is an exam maker and it takes its name from Dr. Heinz Doofenshmirtz.
 
 It converts plain text documents to html that provides selectable, interactive exam that can calculate time and exam score and net score.
@@ -13,5 +15,3 @@ Program, produces html files and that means you don't need another helper progra
 Examinator, develops under GNU GPLv3 so you can may help me to add new features by creating pull requests. Even you may add a feature request to my TODO.md.
 
 Hope so, Teachers may want to use my application to create exams.
-
-![An Exam Created With Examinator](https://raw.githubusercontent.com/Elagoht/Examinator/main/screenshot.png)

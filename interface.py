@@ -1,10 +1,68 @@
 #!/usr/bin/env python3
-from PyQt5.QtWidgets import QFileDialog, QLabel, QSpinBox, QPlainTextEdit, QToolBar, QMainWindow, QApplication, QLineEdit, QAction, QStatusBar, QMenu, QMessageBox
-from PyQt5.QtGui import QIcon, QKeySequence, QRegExpValidator
-from PyQt5.QtCore import Qt, QRegExp
+from PyQt5.QtWidgets import QFileDialog,QLabel,QSpinBox,QPlainTextEdit,QToolBar,QMainWindow,QApplication,QLineEdit,QAction,QStatusBar,QMenu,QMessageBox
+from PyQt5.QtGui import QIcon,QKeySequence,QRegExpValidator, QTextDocument, QColor, QFont, QTextCharFormat, QSyntaxHighlighter
+from PyQt5.QtCore import Qt,QRegExp
 from parser import parse
 from sys import argv,exit
 
+# Define Hylighter Formats
+def format(color,style=""):
+    col=QColor()
+    col.setNamedColor(color)
+    fmt=QTextCharFormat()
+    fmt.setForeground(col)
+    if "bold" in style:
+        fmt.setFontWeight(QFont.Bold)
+    return fmt
+
+# Define Styles
+STYLES={
+    "questions": format("green"),
+    "options": format("cyan"),
+    "error": format("red"),
+    "case_error": format("violet"),
+    "number":format("gray","bold")
+}
+
+# Highlighter Class
+class HighLighter(QSyntaxHighlighter):
+
+    # Highlight Regexs
+    questions=["[0-9]+\)"]
+    options=["[A-E]\)"]
+    error=["[0-9A-Za-z]+\)"]
+    case_error=["[a-e]\)"]
+    number=["[IVX]+\."]
+
+    def __init__(self,parent):
+        super().__init__(parent)
+
+        # Define Rules
+        rules=[]
+        rules+=[(r"^%s"%w,0,STYLES["error"])
+            for w in HighLighter.error]
+        rules+=[(r"%s "%w,0,STYLES["number"])
+            for w in HighLighter.number]
+        rules+=[(r"^%s "%w,0,STYLES["questions"])
+            for w in HighLighter.questions]
+        rules+=[(r"^%s "%w,0,STYLES["options"])
+            for w in HighLighter.options]
+        rules+=[(r"^%s "%w,0,STYLES["case_error"])
+            for w in HighLighter.case_error]
+        self.rules=[(QRegExp(pat),index,fmt)
+            for (pat,index,fmt) in rules]
+
+    # Highlight
+    def highlightBlock(self,text):
+        for expression,nth,format in self.rules:
+            index=expression.indexIn(text,0)
+            index=expression.pos(nth)
+            length=len(expression.cap(nth))
+            self.setFormat(index,length,format)
+            index=expression.indexIn(text,index+length)
+            self.setCurrentBlockState(0)
+
+# Create Main Window
 class MainWin(QMainWindow):
     def __init__(self):
         super(MainWin,self).__init__()
@@ -15,6 +73,7 @@ class MainWin(QMainWindow):
 
         # Central Widget
         self.exam=QPlainTextEdit()
+        self.highlight=HighLighter(self.exam.document())
         self.setCentralWidget(self.exam)
         
         # Menus
@@ -161,9 +220,11 @@ class MainWin(QMainWindow):
         self.show()
         self.setSaveStar()
 
+    # Generate .exm File Format
     def generateData(self):
         return self.eTitle.text()+"\n"+self.exam.toPlainText()+"\n"+self.sTime.text()+"\n"+self.eAnswerKey.text().upper()
 
+    # Save Current Draft
     def saveContent(self,saveAs:bool=False):
         if saveAs or (not self.saved):
             url=QFileDialog.getSaveFileName(self,"Save Exam Draft",self.eTitle.text(),"Examinator Project File (*.exm)")[0]
@@ -183,6 +244,7 @@ class MainWin(QMainWindow):
             self.setSaveStar()
             self.status.showMessage("Document saved successfully.")
 
+    # Create New Document
     def newContent(self):
         message=QMessageBox(QMessageBox.Warning,"Opening Draft","Opening a draft may cause to lose unsaved data. Do you want to continue?",parent=self)
         message.addButton(QMessageBox.Cancel)
@@ -199,10 +261,12 @@ class MainWin(QMainWindow):
         self.eTitle.setText("")
         self.eAnswerKey.setText("")
 
+    # Display or Not Display Star on Title Bar
     def setSaveStar(self):
         changed=self.content==self.exam.toPlainText() and self.time==self.sTime.value() and self.title==self.eTitle.text() and self.answerKey==self.eAnswerKey.text()
         self.setWindowTitle(f"Examinator - {self.inpFile.split('/')[-1]}"+("" if changed else "*"))
 
+    # Load Saved Draft
     def openContent(self):
         message=QMessageBox(QMessageBox.Warning,"Opening Draft","Opening a draft may cause to lose unsaved data. Do you want to continue?",parent=self)
         message.addButton(QMessageBox.Cancel)
@@ -230,6 +294,7 @@ class MainWin(QMainWindow):
                 self.setSaveStar()
                 self.status.showMessage("Document loaded successfully.")
 
+    # Create Final Output
     def generateExam(self,genAs:bool=False):
         if genAs or (not self.gened):
             url=QFileDialog.getSaveFileName(self,"Generate Exam",self.eTitle.text(),"Hyper Text Markup Language File (*.html)")[0]
@@ -241,13 +306,15 @@ class MainWin(QMainWindow):
         if self.gened:
             parse(self.generateData(),self.outFile)
             self.status.showMessage("Exam generated successfully.")
-
+    
+    # Set Font Size
     def setFontSize(self,change:str="="):
         if change=="-" and self.fontSize>8: self.fontSize-=3;
         elif change=="=": self.fontSize=14;
         elif change=="+"and self.fontSize<64: self.fontSize+=3;
         self.exam.setStyleSheet("font-size:"+str(self.fontSize)+"pt; font-family: monospace;")
 
+    # Prevent Closing App if Needed
     def closeEvent(self,event):
         if self.windowTitle().endswith("*"):
             message=QMessageBox(QMessageBox.Critical,"Quit Information","You have unsaved changes. Do you really want to quit?",parent=self)
@@ -259,12 +326,13 @@ class MainWin(QMainWindow):
             else: return event.ignore()
         return app.quit()
 
+    # Show F1 Help Menu
     def showHelp(self):
         QMessageBox.information(self,"Help Information","""Examinator developed to create interactive exams to use in classrooms for teachers. It can generate plain texts to HTML exams.
 
 There are some restrictions to create:
 
-* To create a new question, you must enter question number and close a paranthesis.
+* To create a new question,you must enter question number and close a paranthesis.
 * To create options you must write capital letters from A to E and close a paranthesis.
 * Only the last line will be bold in each question.
 * Time must be an integer and declare in minutes.
@@ -274,7 +342,7 @@ There are some restrictions to create:
 * Correction score calculated by:
     First question's option count = n
     1/(n-1)
-  So if there are 5 options, correction score must be -0.25, if 4 then -0.33.
+  So if there are 5 options,correction score must be -0.25,if 4 then -0.33.
 * Exam score will be calculated out of 100 points.
 
 Example questions:
@@ -297,16 +365,18 @@ A) Only II
 B) Only III
 C) I & II
 D) II & III
-E) I, II & III
+E) I,II & III
 
 The files created with this program can directly run on every browser even if it is mobile browser. You can copy and move or send it to anyone.
 """)
+
+    # Show F2 About Menu
     def showAbout(self):
         QMessageBox.information(self,"About Examinator","""Examinator developed by Furkan Baytekin under GNU GPLv3.
 
 It's a free software for teachers to  make them to create interactive exams to solve with and on classrooms.
 
-Do not use directly on online exams. It contains answer keys on a java script variable, so students can reach it.
+Do not use directly on online exams. It contains answer keys on a java script variable,so students can reach it.
 
 This program developed to use on group activities.""")
 
