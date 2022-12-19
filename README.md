@@ -1,5 +1,9 @@
 # Examinator
 
+Created with: ![Python](https://shields.io/badge/Python-blue?logo=python&logoColor=white)<br/>
+Created for: ![Computers](https://shields.io/badge/Computers-green?logo=qt&logoColor=white)<br/>
+Created to use on: ![Broswers](https://shields.io/badge/Browsers-red?logo=googlechrome&logoColor=white)<br/>
+
 ![An Exam Created With Examinator](https://raw.githubusercontent.com/Elagoht/Examinator/main/screenshot.png)
 
 Examinator is an exam maker and it takes its name from Dr. Heinz Doofenshmirtz.
