@@ -5,8 +5,8 @@ with open("behaviour.js","r",encoding="UTF-8") as js:
     JS=js.read()
 def parse(inp,out): 
     content=inp.split("\n")
-    result=""
     question=0
+    result = ""
     for line in content[1:-1]:
         if line.strip()=="": continue
         elif line[0] in "0123456789":
@@ -16,10 +16,14 @@ def parse(inp,out):
                     result+=((f"    <label><input  type=\"radio\" name=\"{question}\" value=\" \" checked/> Leave Blank.</label>\n</fieldset>\n" if question!=0 else "")+f"<fieldset>\n    <legend>Question {parenthesis[0]}</legend>\n    <p>"+line[len(parenthesis[0])+1:].strip()+"</p>\n")
                     question+=1
         elif line[0] in "ABCDE" and line[1]==")":
-            result+=(f"    <label><input autocomplete=\"off\" type=\"radio\" name=\"{question}\" value=\"{line[0]}\"/> "+line[2:].strip()+"</label>\n")
+            result += (
+                f'    <label><input autocomplete=\"off\" type=\"radio\" name=\"{question}\" value=\"{line[0]}\"/> {line[2:].strip()}'
+                + "</label>\n"
+            )
         else:
-            result+="    <p>"+line.strip()+"</p>\n"
-    html=f"""<!DOCTYPE html>
+            result += f"    <p>{line.strip()}" + "</p>\n"
+    html = (
+        f"""<!DOCTYPE html>
 <!-- This document automatically generated with Examinator by Elagoht -->
 <html lang="tr">
 <head>
@@ -38,16 +42,26 @@ def parse(inp,out):
 </style>
 <body>
     <header>
-        <h1>"""+content[0].strip()+"""</h1>
+        <h1>{content[0].strip()}"""
+        + """</h1>
         <nav id="question-selector">
-            """+"\n            ".join([f"""<input type="button" class="qstn-sel" onclick="showQ({i})" value="{i+1}"/>""" for i in range(question)])+"""
+            """
+        + "\n            ".join(
+            [
+                f"""<input type="button" class="qstn-sel" onclick="showQ({i})" value="{i+1}"/>"""
+                for i in range(question)
+            ]
+        )
+        + """
     <input id="prev-question" type="button" value="&#8656;" onclick="prevQ()">
     <input id="next-question" type="button" value="&#8658;" onclick="nextQ()">
     <input id="finish" type="submit" value="Sınavı Bitir" onclick="promptToFinish()">
         </nav>
     <header>
     <section>
-"""+result+f"""    <label><input type=\"radio\" name=\"{question}\" value=\" \"/ checked> Leave Blank.</label>\n</fieldset>
+"""
+        + result
+        + f"""    <label><input type=\"radio\" name=\"{question}\" value=\" \"/ checked> Leave Blank.</label>\n</fieldset>
     </section>
     <aside>
         <h1>Time Remaining</h1>
@@ -72,4 +86,5 @@ def parse(inp,out):
     {JS}
 </script>
 </html>"""
+    )
     with open(out,"w",encoding="UTF-8") as file: file.write(html)

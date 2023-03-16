@@ -39,16 +39,11 @@ class HighLighter(QSyntaxHighlighter):
 
         # Define Rules
         rules=[]
-        rules+=[(r"^%s"%w,0,STYLES["error"])
-            for w in HighLighter.error]
-        rules+=[(r"%s "%w,0,STYLES["number"])
-            for w in HighLighter.number]
-        rules+=[(r"^%s "%w,0,STYLES["questions"])
-            for w in HighLighter.questions]
-        rules+=[(r"^%s "%w,0,STYLES["options"])
-            for w in HighLighter.options]
-        rules+=[(r"^%s "%w,0,STYLES["case_error"])
-            for w in HighLighter.case_error]
+        rules += [(f"^{w}", 0, STYLES["error"]) for w in HighLighter.error]
+        rules += [(f"{w} ", 0, STYLES["number"]) for w in HighLighter.number]
+        rules += [(f"^{w} ", 0, STYLES["questions"]) for w in HighLighter.questions]
+        rules += [(f"^{w} ", 0, STYLES["options"]) for w in HighLighter.options]
+        rules += [(f"^{w} ", 0, STYLES["case_error"]) for w in HighLighter.case_error]
         self.rules=[(QRegExp(pat),index,fmt)
             for (pat,index,fmt) in rules]
 
@@ -66,7 +61,7 @@ class HighLighter(QSyntaxHighlighter):
 class MainWin(QMainWindow):
     def __init__(self):
         super(MainWin,self).__init__()
-           
+
         # Windows Settings
         self.setMinimumSize(600,400)
         self.setWindowIcon(QIcon("Assets/icon.png"))
@@ -75,13 +70,13 @@ class MainWin(QMainWindow):
         self.exam=QPlainTextEdit()
         self.highlight=HighLighter(self.exam.document())
         self.setCentralWidget(self.exam)
-        
+
         # Menus
         self.mFile=QMenu("File")
         self.mEdit=QMenu("Edit")
         self.mGen=QMenu("Generate")
         self.mInf=QMenu("Generate")
-        
+
         # Menu Items
         ## File Menu
         self.aOpen=QAction(QIcon("Assets/open.png"),"Open")
@@ -153,13 +148,13 @@ class MainWin(QMainWindow):
         # Statusbar & Messages
         self.status=QStatusBar()
         self.setStatusBar(self.status)
-       
+
         # Add Actions to Menus
         self.mFile.addActions([self.aNew,self.aOpen,self.aSave,self.aSaveAs,self.aQuit])
         self.mEdit.addActions([self.aUndo,self.aRedo,self.aCopy,self.aCut,self.aPaste,self.aSelectAll])
         self.mGen.addActions([self.aGenerate,self.aGenerateAs])
         self.mInf.addActions([self.aHelp,self.aAbout])
-        
+
         # Add Menus to Menubar
         self.menu=self.menuBar()
         self.menu.addMenu(self.mFile)
@@ -176,7 +171,7 @@ class MainWin(QMainWindow):
         self.toolBar.addActions([self.aFontDsc,self.aFontDef,self.aFontAsc])
         self.toolBar.addSeparator()
         self.toolBar.addActions([self.aGenerate,self.aGenerateAs])
-        
+
         # Keyboard Shortcuts
         ## File Menu
         self.aNew.setShortcut(QKeySequence("Ctrl+N"))
@@ -201,7 +196,7 @@ class MainWin(QMainWindow):
         ## Information
         self.aHelp.setShortcut(QKeySequence("F1"))
         self.aAbout.setShortcut(QKeySequence("F2"))
-        
+
         # Other Variables
         self.inpFile="Untitled Exam"
         self.outFile="index"
@@ -214,7 +209,9 @@ class MainWin(QMainWindow):
         self.fontSize=14
 
         # Set Font Size
-        self.exam.setStyleSheet("font-size:"+str(self.fontSize)+"pt; font-family: monospace;")
+        self.exam.setStyleSheet(
+            f"font-size:{self.fontSize}pt; font-family: monospace;"
+        )
 
         # Show Window
         self.show()
@@ -234,9 +231,8 @@ class MainWin(QMainWindow):
                 url=lastSlash if lastSlash[-4:]!=".exm" else lastSlash[:-4]
                 self.saved=True
         if self.saved:
-            file=open(self.inpFile+".exm" if self.inpFile[-4:]!=".exm" else self.inpFile,"w",encoding="UTF-8")
-            file.write(self.generateData())
-            file.close()
+            with open(f"{self.inpFile}.exm" if self.inpFile[-4:]!=".exm" else self.inpFile, "w", encoding="UTF-8") as file:
+                file.write(self.generateData())
             self.content=self.exam.toPlainText()
             self.time=self.sTime.value()
             self.title=self.eTitle.text()
@@ -274,7 +270,7 @@ class MainWin(QMainWindow):
         message.setDefaultButton(QMessageBox.Cancel)
         if self.windowTitle().endswith("*") and message.exec_()==QMessageBox.Cancel: return
         url=QFileDialog.getOpenFileName(self,"Save Exam Draft",self.eTitle.text(),"Examinator Project File (*.exm)")[0]
-        if url==None:
+        if url is None:
             file=QFileDialog().getOpenFileName(self,"Open Exam Draft","./","Examinator Project File (*.exm)")[0]
         else:
             file=url
@@ -312,7 +308,9 @@ class MainWin(QMainWindow):
         if change=="-" and self.fontSize>8: self.fontSize-=3;
         elif change=="=": self.fontSize=14;
         elif change=="+"and self.fontSize<64: self.fontSize+=3;
-        self.exam.setStyleSheet("font-size:"+str(self.fontSize)+"pt; font-family: monospace;")
+        self.exam.setStyleSheet(
+            f"font-size:{str(self.fontSize)}pt; font-family: monospace;"
+        )
 
     # Prevent Closing App if Needed
     def closeEvent(self,event):
@@ -321,9 +319,7 @@ class MainWin(QMainWindow):
             message.addButton(QMessageBox.Cancel)
             message.addButton(QMessageBox.Discard)
             message.setDefaultButton(QMessageBox.Cancel)
-            if message.exec_()==QMessageBox.Discard:
-                return app.quit()
-            else: return event.ignore()
+            return app.quit() if message.exec_()==QMessageBox.Discard else event.ignore()
         return app.quit()
 
     # Show F1 Help Menu
